@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "lit-html": "^1.0.0"
   },
   "devDependencies": {
     "foundation-sites": "^6.5.3",

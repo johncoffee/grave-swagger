@@ -1,3 +1,5 @@
+import { renderStone } from './renderStone.js'
+
 console.log("hi from module")
 export const NICE = 42
 
@@ -19,6 +21,7 @@ type TombStoneProduct = {
 
 const webshopInputFixturesProducts = {
 }
+
 
 
 console.assert(!!document.querySelector('.grave-swagger'))
@@ -44,4 +47,11 @@ Array.from(document.querySelectorAll('.grave-swagger'))
 function collect (node:Element) {
   Array.from(node.querySelectorAll('input'))
     .forEach((el:HTMLInputElement) => console.log(`${el.name}: ${el.value}`))
+
+  renderStone({
+    ln1: 'yay',
+    ln2: "ok",
+    ln3: "2123",
+    ln4: "hey hey",
+  }, document.querySelector('.stone-render-container') as Element)
 }
