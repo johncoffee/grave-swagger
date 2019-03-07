@@ -14,7 +14,8 @@
     // "outDir": "./",                        /* Redirect output structure to the directory. */
     // "rootDir": "./",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
     // "composite": true,                     /* Enable project compilation */
-    // "removeComments": true,                /* Do not emit comments to output. */
+     "removeComments": false,                /* Do not emit comments to output. */
+    "pretty": true,
      "noEmit": false,                        /* Do not emit outputs. */
      "noEmitOnError": true,
      "noEmitHelpers": false,

@@ -33,25 +33,30 @@ Array.from(document.querySelectorAll('.next-button'))
 
 Array.from(document.querySelectorAll('.grave-swagger'))
   .forEach((el:Element) => {
-    function updateView () {
-      collect(el)
-    }
 
-    el.addEventListener('mouseup', evt=>updateView())
-    el.addEventListener('keyup', evt=>updateView())
+    el.addEventListener('mouseup', evt=>stateChanged())
+    el.addEventListener('keyup', evt=>stateChanged())
 
     Array.from(el.querySelectorAll('select'))
-      .forEach((el:Element) => el.addEventListener('change', evt=>updateView()))
+      .forEach((el:Element) => el.addEventListener('change', evt=>stateChanged()))
   })
 
-function collect (node:Element) {
-  Array.from(node.querySelectorAll('input'))
-    .forEach((el:HTMLInputElement) => console.log(`${el.name}: ${el.value}`))
+const stateChanged = () => setTimeout(() => collect(document.querySelector('.grave-swagger') as Element),0)
 
+function collect (node:Element) {
+  const state:any = {}
+  Array.from(node.querySelectorAll('input[type=text], select, [type=radio]:checked'))
+    .forEach((el:any) => {
+      state[el.name] = el.value
+    })
+
+  console.debug(state)
+  const s = state
   renderStone({
-    ln1: 'yay',
-    ln2: "ok",
-    ln3: "2123",
-    ln4: "hey hey",
+    ln1: state.ln1,
+    ln2: state.ln2,
+    ln3: `★ ${s['dead-d']}. ${s['dead-m']}. ${s['dead-y']} ✝ ${s['born-d']}. ${s['born-m']}. ${s['born-y']}`,
+    ln4: state['extra-line-name'] === 'yes' ? "" : state['text-after'],
+    ln5: state['extra-line-name'] === 'yes' ? state['text-after'] : "",
   }, document.querySelector('.stone-render-container') as Element)
 }
