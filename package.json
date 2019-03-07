@@ -1,0 +1,20 @@
+{
+  "name": "grave-swag",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "foundation-sites": "^6.5.3",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.1",
+    "webpack": "^4.29.6"
+  },
+  "scripts": {
+    "develop": "webpack-dev-server --watch-aggregate-timeout 1000",
+    "build": "webpack --mode production"
+  },
+  "author": "",
+  "license": "ISC"
+}
