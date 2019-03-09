@@ -1,13 +1,40 @@
 import { renderStone } from './renderStone'
 import { html, render } from '../node_modules/lit-html/lit-html'
+import { fetchProducts } from './apiClient'
+import { GraveStoneOrder, StoneBase, PlænestenOrder, UrnestenOrder, Product } from './types.js'
 
-function fetchProducts () {
-  return [
-    {id: 123, grImage: ""}
-  ]
+export const __order:GraveStoneOrder = <GraveStoneOrder>{
+  // properties
+  stoneBaseProduct: <StoneBase>{name: "nice blå granit", price: 750000, graveCategory: "plænesten"},
+  graveCategory: "plænesten",
+  stoneMaterial: "granite-red",
+
+  // swag
+  customTextLines: <string[]>[],
+  "dead-d": "",
+  "dead-m": "",
+  "dead-y": "",
+  "born-d": "",
+  "born-m": "",
+  "born-y": "",
+  'extra-line-name': "no",
+  'text-after': "",
+
+  // product addons,
+  // stoneStandSupport?: {},
+  // decorationIllustration: "birds",
+  // decorationFrame: 'round-corners',
 }
 
-export function renderMain (el:Element) {
+export async function init (el:Element) {
+  const products = await fetchProducts()
+
+  renderSwagger(el, __order)
+}
+
+let once=false
+
+function renderSwagger (el:Element, order:GraveStoneOrder) {
   const mainTpl = html`
 <div class="grid-x grave-swagger">
   <div class="cell small-6">
@@ -113,10 +140,22 @@ export function renderMain (el:Element) {
 `
 
   render(mainTpl, el)
-  addListeners()
+  renderStone({
+    grImage: '',
+    ln1: order.customTextLines[0],
+    ln2:  order.customTextLines[1],
+    ln3: `★ ${order['dead-d']}. ${order['dead-m']}. ${order['dead-y']} ✝ ${order['born-d']}. ${order['born-m']}. ${order['born-y']}`,
+    ln4: order['extra-line-name'] === 'yes' ? "" : order['text-after'],
+    ln5: order['extra-line-name'] === 'yes' ? order['text-after'] : "",
+  }, document.querySelector('.stone-render-container') as Element)
+
+  if (!once) {
+    once=true
+    addListeners(order)
+  }
 }
 
-function addListeners () {
+function addListeners (order:GraveStoneOrder) {
   console.assert(!!document.querySelector('.grave-swagger'))
 
   Array.from(document.querySelectorAll('.next-button'))
@@ -134,23 +173,28 @@ function addListeners () {
         .forEach((el:Element) => el.addEventListener('change', evt=>stateChanged()))
     })
 
-  const stateChanged = () => setTimeout(() => collect(document.querySelector('.grave-swagger') as Element),0)
+  const stateChanged = () => setTimeout(() => collect(document.querySelector('.grave-swagger') as Element, order),0)
 
-  function collect (node:Element) {
-    const state:any = {}
+  function collect (node:Element, order:GraveStoneOrder) {
+    const form:any = {}
     Array.from(node.querySelectorAll('input[type=text], select, [type=radio]:checked'))
-      .forEach((el:any) => {
-        state[el.name] = el.value
-      })
+      .map((el:any) => [el.name, el.value])
+      .forEach(([key, value]) => form[key] = value)
 
-    console.debug(state)
-    const s = state
+    order.customTextLines[0] = form.ln1
+    order.customTextLines[1] = form.ln2
+
+    ;(Object.keys(order) as any).forEach((k:keyof GraveStoneOrder) => {
+      if (form[k] !== undefined) order[k] = form[k]
+    })
+
     renderStone({
-      ln1: state.ln1,
-      ln2: state.ln2,
-      ln3: `★ ${s['dead-d']}. ${s['dead-m']}. ${s['dead-y']} ✝ ${s['born-d']}. ${s['born-m']}. ${s['born-y']}`,
-      ln4: state['extra-line-name'] === 'yes' ? "" : state['text-after'],
-      ln5: state['extra-line-name'] === 'yes' ? state['text-after'] : "",
+      grImage: '',
+      ln1: order.customTextLines[0],
+      ln2: order.customTextLines[1],
+      ln3: `★ ${order['dead-d']}. ${order['dead-m']}. ${order['dead-y']} ✝ ${order['born-d']}. ${order['born-m']}. ${order['born-y']}`,
+      ln4: order['extra-line-name'] === 'yes' ? "" : order['text-after'],
+      ln5: order['extra-line-name'] === 'yes' ? order['text-after'] : "",
     }, document.querySelector('.stone-render-container') as Element)
   }
 
