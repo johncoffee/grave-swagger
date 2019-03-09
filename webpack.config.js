@@ -8,7 +8,7 @@ console.log("Webpack mode "+ (dev ? 'development' : 'production'))
 module.exports = {
   mode: dev ? 'development' : 'production',
   entry: [
-    path.join(__dirname, 'src', 'index.js'),
+    path.join(__dirname, 'src', 'index.ts'),
     path.join(__dirname, 'src/style/normalize.scss'),
     path.join(__dirname, 'src/style/styles.scss'),
   ],
@@ -17,15 +17,25 @@ module.exports = {
     filename: dev ? '[name].js' : '[name][hash].min.js'
   },
   module: {
-    rules: [{
+    rules: [
+      {
       test: /\.(sa|sc|c)ss$/,
-      use: [
-        // fallback to style-loader in development
-        MiniCssExtractPlugin.loader,
-        "css-loader",
-        "sass-loader",
-      ]
-    }]
+        use: [
+          // fallback to style-loader in development
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+          "sass-loader",
+        ]
+      },
+      {
+        test: /\.ts$/,
+        use: 'ts-loader',
+        exclude: /node_modules/
+      }
+    ]
+  },
+  resolve: {
+    extensions: [ '.ts', '.js' ]
   },
   plugins: [
     // new MiniCssExtractPlugin({

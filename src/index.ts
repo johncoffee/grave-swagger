@@ -1,4 +1,4 @@
-import { renderMain } from './module1.js'
+import { renderMain } from './module1'
 
 // Side effects
 
