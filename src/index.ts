@@ -4,9 +4,10 @@ import { renderMain } from './module1.js'
 
 // Side effects
 
-console.assert(!!document.querySelector('.root-con'), "missing root el")
-renderMain(document.querySelector('.root-con') as Element)
-
+;(window as any).mountSwagger = function(selector:string) {
+  console.assert(!!document.querySelector(selector), `didnt find ${selector}`)
+  renderMain(document.querySelector('.root-con') as Element)
+}
 
 function fetchProducts () {
   return [
