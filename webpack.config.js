@@ -58,7 +58,7 @@ module.exports = {
   },
 
   devServer: {
-    contentBase: path.join(__dirname),
-    lazy: true,
+    publicPath: "/dist/", // renaming the server output
+    hot: false,
   }
 };
