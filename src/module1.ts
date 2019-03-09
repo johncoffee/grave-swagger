@@ -1,6 +1,12 @@
 import { renderStone } from './renderStone.js'
 import { html, render } from '../node_modules/lit-html/lit-html.js'
 
+function fetchProducts () {
+  return [
+    {id: 123, grImage: ""}
+  ]
+}
+
 export function renderMain (el:Element) {
   const mainTpl = html`
 <div class="grid-x grave-swagger">
