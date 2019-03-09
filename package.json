@@ -19,7 +19,7 @@
   },
   "scripts": {
     "devserver": "webpack-dev-server --watch-aggregate-timeout 1000",
-    "develop": " webpack --mode development --watch -e js,scss",
+    "develop": "webpack --mode development --watch -e js,scss",
     "build": "webpack --mode production"
   },
   "author": "",

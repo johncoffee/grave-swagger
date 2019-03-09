@@ -8,7 +8,7 @@ console.log("Webpack mode "+ (dev ? 'development' : 'production'))
 module.exports = {
   mode: dev ? 'development' : 'production',
   entry: [
-    path.join(__dirname, 'build', 'index.js'),
+    path.join(__dirname, 'src', 'index.js'),
     path.join(__dirname, 'src/style/normalize.scss'),
     path.join(__dirname, 'src/style/styles.scss'),
   ],
@@ -37,8 +37,8 @@ module.exports = {
       // chunkFilename: "[id].css"
       // Options similar to the same options in webpackOptions.output
       // both options are optional
-      filename: dev ? '[name].css' : '[name][hash].min..css',
-      chunkFilename: dev ? '[id].css' : '[id][hash].min..css',
+      filename: dev ? '[name].css' : '[name][hash].min.css',
+      chunkFilename: dev ? '[id].css' : '[id][hash].min.css',
     })
   ],
   optimization: {
@@ -46,4 +46,9 @@ module.exports = {
       new OptimizeCSSAssetsPlugin({})
     ]
   },
+
+  devServer: {
+    contentBase: path.join(__dirname),
+    lazy: true,
+  }
 };
