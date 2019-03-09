@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <!--<link rel="stylesheet" href="node_modules/foundation-sites/dist/css/foundation.min.css">-->
-    <!--<link rel="stylesheet" href="node_modules/foundation-sites/dist/css/foundation-prototype.min.css">-->
     <link rel="stylesheet" href="dist/main.css">
     <style>
         html, body {
@@ -30,9 +28,16 @@
         .bg--sand {background-image: url("images/font-sand.jpg")}
         .bg--helvetica {background-image: url("images/font-helvetica.jpg")}
     </style>
-</head>
-<body class="zf-root">
-    <div class="grid-container root-con" style="background: #fff"></div>
+
+    <script>document.addEventListener('swaggerLoaded', evt => evt.mountSwagger('.root-con'))</script>
     <script src="dist/main.js" defer></script>
+
+</head>
+<body>
+
+<div class="zf-root">
+    <div class="grid-container root-con" style="background: #fff"></div>
+</div>
+
 </body>
 </html>
