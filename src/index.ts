@@ -4,8 +4,11 @@ import { init } from './module1'
 
 const evt:any = new Event('swaggerLoaded')
 evt.mountSwagger = function(selector:string) {
-  console.assert(!!document.querySelector(selector), `didnt find ${selector}`)
-  init(document.querySelector('.root-con') as Element)
+  const el:Element|null = document.querySelector(selector)
+  console.assert(!!el, `didnt find ${selector}`)
+  if (el) {
+    init(el)
+  }
 }
 document.dispatchEvent(evt)
 
