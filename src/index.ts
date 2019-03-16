@@ -1,14 +1,11 @@
 import { init } from './module1'
+import * as lit from '../node_modules/lit-html/lit-html'
 
 // Side effects
 
 const evt:any = new Event('swaggerLoaded')
-evt.mountSwagger = function(selector:string) {
-  const el:Element|null = document.querySelector(selector)
-  console.assert(!!el, `didnt find ${selector}`)
-  if (el) {
-    init(el)
-  }
+evt.mountSwagger = function(sel:string = '.grave-swagger-con') {
+  init(sel)
 }
 document.dispatchEvent(evt)
 
