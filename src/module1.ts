@@ -72,7 +72,6 @@ function render (state:IState) {
 <div class="grid-x grave-swagger">
   <div class="cell small-12">${chooseFont.render(state)}</div>
   <div class="cell small-6">
-        ff
       ${form.render(state)}
   </div>
   <div class="cell small-6">
@@ -89,7 +88,7 @@ function render (state:IState) {
 `
 }
 
-export function init (_selector:string) {
+export function mountRoot (_selector:string) {
   selector = _selector
   const el = document.querySelector(selector) as Element
   console.assert(!!el, "Didnt find element by "+_selector)

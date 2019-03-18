@@ -1,11 +1,10 @@
-import { init } from './module1'
-import * as lit from '../node_modules/lit-html/lit-html'
+import { mountRoot } from './module1'
 
 // Side effects
 
 const evt:any = new Event('swaggerLoaded')
 evt.mountSwagger = function(sel:string = '.grave-swagger-con') {
-  init(sel)
+  mountRoot(sel)
 }
 document.dispatchEvent(evt)
 
