@@ -1,4 +1,5 @@
 import { html } from '../node_modules/lit-html/lit-html'
+import { unsafeHTML } from '../node_modules/lit-html/directives/unsafe-html'
 import { IState } from './store'
 import { dispatch, } from './module1'
 import { GraveStoneOrder } from './types.js'
@@ -92,51 +93,43 @@ export function render (state: IState) {
     <select name="dead-d">
     ${new Array(31).fill(1).map((v, idx) => html`<option>${v + idx}</option>`)}
     </select>
-    </label>
-    </div>
-    <div class="medium-3 cell auto">
-  <label>
+  </label>
+  </div>
+    
+  <div class="medium-3 cell auto">
+    <label>
     <select name="dead-m">
-    ${(new Array(31).fill(1).map((v, idx) => html`<option>${v + idx}</option>`))}                             
+        ${(new Array(31).fill(1).map((v, idx) => html`<option>${v + idx}</option>`))}                             
     </select>
     </label>
-    </div>
+  </div>
+    
     <div class="medium-6 cell auto">
-  <label>
-    <select name="dead-y">
-    ${new Array(120).fill((new Date).getFullYear() - 120 + 1).map((v, idx) => html`<option>${v + idx}</option>`).reverse()}
-    </select>
+    <label>
+      <select name="dead-y">
+          ${unsafeHTML(`${(new Array(120)).fill((new Date).getFullYear() - 120 + 1).map((v, idx) => `<option>${v + idx}</option>`).reverse().join('')}`)}
+      </select>
     </label>
     </div>
 
     <div class="cell small-12">
     <label>Ønskes efterskrift
-  <select name="text-after">
-    <option selected></option>
-    <option>Tak for alt</option>
-                    <option>Altid frejdig når du går</option>
-  <option>Hvil i fred</option>
-  <option>Elsket og savnet</option>
-  <option>Altid i vore hjerter</option>
-  <option>Gemt i vore hjerter</option>
-  <option>Minderne lever</option>
-  <option>Et sidste farvel</option>
-  <option>Mindes med kærlighed</option>
-  <option>Tak for gode minder</option>
-  </select>
+    <select name="text-after">
+      ${state.efterskrift.map(txt => html`<option>${txt}</option>`)}
+    </select>
   </label>
   </div>
 
   <fieldset class="cell small-12">
     <legend>Skal inskriptionen udføres så der senere er plads til et ekstra navn?</legend>
-  <label>
-  <input type="radio" name="extra-line-name" value="yes">
-  Ja
-  </label>
-  <label>
-  <input type="radio" name="extra-line-name" value="no">
-    Nej
+      <label>
+      <input type="radio" name="extra-line-name" value="yes">
+      Ja
+      </label>
+      <label>
+      <input type="radio" name="extra-line-name" value="no">
+      Nej
     </label>
-    </fieldset>
-    </form>
+  </fieldset>
+</form>
 `}

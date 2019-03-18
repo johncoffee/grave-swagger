@@ -12,6 +12,7 @@ export interface IState {
   route: Route
   order: GraveStoneOrder
   font: Font
+  efterskrift: string[]
 }
 
 
@@ -26,6 +27,18 @@ export enum Font {
 export const originalState:Readonly<IState> = {
   route: Route.ChooseType,
   font: Font.Helvetica,
+  efterskrift: <string[]>[
+    `Tak for alt`,
+    `Altid frejdig når du går`,
+    `Hvil i fred`,
+    `Elsket og savnet`,
+    `Altid i vore hjerter`,
+    `Gemt i vore hjerter`,
+    `Minderne lever`,
+    `Et sidste farvel`,
+    `Mindes med kærlighed`,
+    `Tak for gode minder`,
+  ],
   order: <GraveStoneOrder>{
     // properties
     stoneBaseProduct: <StoneBase>{name: "nice blå granit", price: 750000, graveCategory: "plænesten"},
