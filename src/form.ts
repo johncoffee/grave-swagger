@@ -4,29 +4,9 @@ import { IState } from './store'
 import { dispatch, } from './module1'
 import { GraveStoneOrder } from './types.js'
 
-function inputHandler1 (event:KeyboardEvent) {
-  setTimeout(() => {
-    const el:HTMLInputElement = event.target as any
-    dispatch((currentState, updateState) => {
-      const order = currentState.order
-      order.customTextLines[0] = el.value
-      updateState({order})
-    })
-  }, 10)
-}
-
-function inputHandler2 (event:KeyboardEvent) {
-  setTimeout(() => {
-    const el:HTMLInputElement = event.target as any
-    dispatch((currentState, updateState) => {
-      const order = currentState.order
-      order.customTextLines[0] = el.value
-      updateState({order})
-    })
-  }, 10)
-}
-
 const m = new Map<string, Function>()
+m.set('ln1', (val:string, order:GraveStoneOrder) => order.customTextLines[0] = val)
+m.set('ln2', (val:string, order:GraveStoneOrder) => order.customTextLines[1] = val)
 m.set('born-d', (val:string, order:GraveStoneOrder) => order['born-d'] = val)
 m.set('born-m', (val:string, order:GraveStoneOrder) => order['born-m'] = val)
 m.set('born-y', (val:string, order:GraveStoneOrder) => order['born-y'] = val)
@@ -50,15 +30,15 @@ function stuffchanged (evt: Event) {
 
 export function render (state: IState) {
   return html`
-<form class="grid-x grid-margin-x" @change=${stuffchanged}>
+<form class="grid-x grid-margin-x" @change=${stuffchanged} @keydown=${stuffchanged}>
   <div class="medium-6 cell">
     <label>Navn linje 1 (max 20 tegn)
-  <input type="text" name="ln1" @keydown=${inputHandler1} @change=${inputHandler1}>
+  <input type="text" name="ln1">
     </label>
     </div>
     <div class="medium-6 cell">
     <label>Navn linje 2 (max 20 tegn)
-  <input type="text" name="ln2" @keydown=${inputHandler2} @change=${inputHandler2}>
+  <input type="text" name="ln2">
     </label>
     </div>
 
