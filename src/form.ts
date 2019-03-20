@@ -18,19 +18,23 @@ m.set('extra-line-name', (val:any, order:GraveStoneOrder) => order['extra-line-n
 
 function stuffchanged (evt: Event) {
   const el = evt.target as HTMLInputElement
+  console.debug(el)
+  const value:string = el.value
   const f = m.get(el.name)
   if (f) {
-    dispatch((currentState, updateState) => {
-      const order = currentState.order
-      f(el.value, order)
-      updateState({order})
-    })
+    setTimeout(() =>
+      dispatch((currentState, updateState) => {
+        const order = currentState.order
+        f(value, order)
+        updateState({order})
+      })
+    ,0)
   }
 }
 
 export function render (state: IState) {
   return html`
-<form class="grid-x grid-margin-x" @change=${stuffchanged} @keydown=${stuffchanged}>
+<form class="grid-x grid-margin-x" @change=${stuffchanged} @input=${stuffchanged}>
   <div class="medium-6 cell">
     <label>Navn linje 1 (max 20 tegn)
   <input type="text" name="ln1">
