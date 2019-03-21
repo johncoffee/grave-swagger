@@ -12,7 +12,13 @@ export async function fetchProductsByCategory(category:number):Promise<Product[]
       },<Product>{
         name: Font[Font.Antikva],
         image: '/images/font-antikva.jpg',
-      }
+      }, <Product>{
+        name: Font[Font.Skriveskrift],
+        image: '/images/font-antikva.jpg',
+      },<Product>{
+        name: Font[Font.Bronze],
+        image: '/images/font-antikva.jpg',
+      },
     ]
   }
   if (category === -2) {
@@ -2237,4 +2243,20 @@ var module:any
 if (module && !module.parent) {
   _fetchRemoteWc()
     .then(res =>   console.debug(res))
+}
+
+// getBasketProducts().then(console.log)
+async function getBasketProducts (url = 'https://www.victorfenger.dk/basket/') {
+  const res = await fetch(url)
+  const html = await res.text()
+
+  const fragment = document.createElement('div')
+  fragment.innerHTML = html
+
+  const products:string[] = [
+      ...fragment.querySelectorAll('.remove[data-product_id]') as any,
+    ]
+    .map(aEl => aEl.getAttribute('data-product_id'))
+
+  return products
 }

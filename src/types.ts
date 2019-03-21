@@ -8,7 +8,6 @@ export interface Product {
 
 export interface GraveStoneOrder {
   // properties
-  graveCategory: 'urnesten' | 'plænesten'
 
   stoneProduct: Product,
   fontProduct: Product,

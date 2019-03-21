@@ -4,7 +4,7 @@ import * as progress from './progress'
 import * as chooseFont from './chooseFont'
 import * as chooseBase from './chooseBaseProduct'
 import * as formDetails from './form'
-import { getState, IState, IUpdateState, originalState, Route, addState } from './store'
+import { getState, IState, IUpdateState, originalState, Route, addState, updateOrder } from './store'
 import { fetchProductsByCategory } from './apiClient'
 
 let selector:string
@@ -47,22 +47,19 @@ export function dispatchUpdateShorthand (newState:Partial<IState>) {
 }
 
 function render (state:IState) {
-  const order = state.order
 
   if (state.showLoading) {
     return lit.html`Loading....`
   }
 
+  console.assert(!!state.order.stoneProduct, "Render needs a stone product to be set")
   return lit.html`
 
 <!--progress-->
-<div class="grid-x">
-    <div class="cell auto">${progress.render(state)}</div>
-</div>
+${'' && progress.render(state)}
     
 <!--product base type -->
-${chooseBase.render(state)}
-<hr>
+${'' && chooseBase.render(state)}
 
 <div class="grid-x grid-margin-x">
   <div class="cell small-12">
@@ -83,21 +80,24 @@ ${chooseBase.render(state)}
 `
 }
 
-function onMounted (el:Element) {
+function onMounted () {
 
   !async function () {
     // const products = await fetchProductsByCategory(18)
 
     const fontProducts = await fetchProductsByCategory(-1)
-    dispatchUpdateShorthand({fontProducts})
+    addState({fontProducts})
 
     const stoneMaterialProducts = await fetchProductsByCategory(-2)
-    dispatchUpdateShorthand({stoneMaterialProducts})
+
+    addState({stoneMaterialProducts})
+    console.assert(!!stoneMaterialProducts[0], 'missing a product')
 
     const efterskriftProducts = await fetchProductsByCategory(-3)
-    dispatchUpdateShorthand({efterskriftProducts})
+    addState({efterskriftProducts})
 
-    dispatchUpdateShorthand({showLoading: false})
+    addState({showLoading: false})
+    updateOrder({stoneProduct: stoneMaterialProducts[0]})
   }()
 }
 
@@ -106,7 +106,7 @@ export function mountRoot (_selector:string) {
   const el = document.querySelector(selector) as Element
   console.assert(!!el, "Didnt find element by "+_selector)
   lit.render(render(originalState), el)
-  onMounted(el)
+  onMounted()
 }
 
 export function decorateGlobal(window:any) {

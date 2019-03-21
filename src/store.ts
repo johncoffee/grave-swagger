@@ -40,13 +40,8 @@ export const originalState:Readonly<IState> = <IState>{
   efterskriftProducts: [],
   order: <GraveStoneOrder>{
     // properties
-    graveCategory: "plænesten",
 
-    stoneProduct: <Product>{
-      name: 'Multicolor Poleret urnesten',
-      image:'/images/Multicolor-Poleret-urnesten.jpg',
-      price: '319900',
-    },
+    // stoneProduct?: Product{},
 
     // swag
     customTextLines: <string[]>[
