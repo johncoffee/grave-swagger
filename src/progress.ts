@@ -1,11 +1,7 @@
-import {html} from '../node_modules/lit-html/lit-html'
+import { html } from '../node_modules/lit-html/lit-html.js'
 
 import { IState, Route } from './store'
-import { dispatch, dispatchUpdateShorthand as upd } from './module1'
-
-function setRoute(route:Route) {
-  upd({route})
-}
+import { dispatchUpdateShorthand as upd } from './module1'
 
 export function render (state:IState) {
   return html`
@@ -15,15 +11,17 @@ export function render (state:IState) {
 }
 </style>
   <div class="grid-x">
-      <div @click=${{handleEvent: () => setRoute(Route.ChooseType)}})" 
+      <div @click=${() => upd({route: Route.ChooseType})}" 
         class=${'padding-2 cell auto ' + (state.route === Route.ChooseType ? `progress__tile--active` : '')}>
           <span>1 Vælg type</span>       
       </div>
-      <div @click=${{handleEvent: () => setRoute(Route.Swag)}})"
+      <div @click=${() => upd({route: Route.Swag})}"
         class=${'padding-2 cell auto ' + (state.route === Route.Swag ? `progress__tile--active` : '')}>
           2 Tilvælg swag      
       </div>
-      <div class="cell auto padding-2">3 Gennemse ordre</div>
+      <div @click=${() => upd({route: Route.ReviewOrder})}"
+         class="cell auto padding-2">3 Gennemse ordre</div>
+         
       <div class="cell auto padding-2">4 Betaling</div>
       <div class="cell auto padding-2">5 Ordrebekræftelse</div>
   </div>

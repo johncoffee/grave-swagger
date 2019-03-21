@@ -8,28 +8,9 @@
         html, body {
             background-color: #eee;
         }
-        .custom-text {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-        }
-        .custom-text--ln1 {top: 120px}
-        .custom-text--ln2 {top: 140px}
-        .custom-text--ln3 {top: 160px}
-        .custom-text--ln4 {top: 180px}
-        .custom-text--ln5 {top: 200px}
-
-        .bg {
-
-        }
-        .bg--antikva {background-image: url("images/font-antikva.jpg")}
-        .bg--antikva {background-image: url("images/font-bronze.jpg")}
-        .bg--sand {background-image: url("images/font-sand.jpg")}
-        .bg--helvetica {background-image: url("images/font-helvetica.jpg")}
     </style>
 
-    <script>document.addEventListener('swaggerLoaded', evt => evt.mountSwagger())</script>
+    <script>document.addEventListener('swaggerLoaded', evt => evt.mountSwagger('.grave-swagger-con'))</script>
     <script src="dist/main.js" defer></script>
 
 </head>

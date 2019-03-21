@@ -1,4 +1,5 @@
-import { GraveStoneOrder, StoneBase } from './types'
+import { GraveStoneOrder, Product, } from './types'
+import { dispatchUpdateShorthand as upd } from './module1'
 
 export enum Route {
   ChooseType,
@@ -9,10 +10,13 @@ export enum Route {
 }
 
 export interface IState {
+  showLoading: boolean
   route: Route
   order: GraveStoneOrder
+  fontProducts: Product[]
+  stoneMaterialProducts: Product[]
   font: Font
-  efterskrift: string[]
+  efterskriftProducts: Product[]
 }
 
 
@@ -20,41 +24,42 @@ export enum Font {
   Helvetica,
   Antikva,
   Skriveskrift,
+  Bronze,
 }
 
 // state
 
-export const originalState:Readonly<IState> = {
+export const originalState:Readonly<IState> = <IState>{
+  showLoading: true,
   route: Route.ChooseType,
   font: Font.Helvetica,
-  efterskrift: <string[]>[
-    `Tak for alt`,
-    `Altid frejdig når du går`,
-    `Hvil i fred`,
-    `Elsket og savnet`,
-    `Altid i vore hjerter`,
-    `Gemt i vore hjerter`,
-    `Minderne lever`,
-    `Et sidste farvel`,
-    `Mindes med kærlighed`,
-    `Tak for gode minder`,
-  ],
+
+  stoneMaterialProducts: [],
+  fontProducts: [],
+
+  efterskriftProducts: [],
   order: <GraveStoneOrder>{
     // properties
-    stoneBaseProduct: <StoneBase>{name: "nice blå granit", price: 750000, graveCategory: "plænesten"},
     graveCategory: "plænesten",
-    stoneMaterial: "granite-red",
+
+    stoneProduct: <Product>{
+      name: 'Multicolor Poleret urnesten',
+      image:'/images/Multicolor-Poleret-urnesten.jpg',
+      price: '319900',
+    },
 
     // swag
-    customTextLines: <string[]>[],
-    "dead-d": "",
-    "dead-m": "",
-    "dead-y": "",
-    "born-d": "",
-    "born-m": "",
-    "born-y": "",
+    customTextLines: <string[]>[
+      'john julian',
+      'hansen'
+    ],
+    "dead-d": "1",
+    "dead-m": "2",
+    "dead-y": "2012",
+    "born-d": "15",
+    "born-m": "12",
+    "born-y": "1922",
     'extra-line-name': "no",
-    'text-after': "",
 
     // product addons,
     // stoneStandSupport?: {},
@@ -76,8 +81,15 @@ export interface IUpdateState {
   (newState:Partial<IState>): void
 }
 
-export function updateState (newState:Partial<IState>) {
+export function addState (newState:Partial<IState>) {
   _state = <IState>{..._state, ...newState}
+}
+
+
+// high level
+export function updateOrder (newOrder:Partial<GraveStoneOrder>) {
+  const order = {...(getState().order), ...newOrder}
+  upd({order})
 }
 
 

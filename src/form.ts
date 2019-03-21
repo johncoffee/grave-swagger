@@ -1,31 +1,45 @@
 import { html } from '../node_modules/lit-html/lit-html'
 import { unsafeHTML } from '../node_modules/lit-html/directives/unsafe-html'
-import { IState } from './store'
+import { getState, IState } from './store'
 import { dispatch, } from './module1'
-import { GraveStoneOrder } from './types.js'
+import { GraveStoneOrder } from './types'
 
-const m = new Map<string, Function>()
-m.set('ln1', (val:string, order:GraveStoneOrder) => order.customTextLines[0] = val)
-m.set('ln2', (val:string, order:GraveStoneOrder) => order.customTextLines[1] = val)
-m.set('born-d', (val:string, order:GraveStoneOrder) => order['born-d'] = val)
-m.set('born-m', (val:string, order:GraveStoneOrder) => order['born-m'] = val)
-m.set('born-y', (val:string, order:GraveStoneOrder) => order['born-y'] = val)
-m.set('dead-d', (val:string, order:GraveStoneOrder) => order['dead-d'] = val)
-m.set('dead-m', (val:string, order:GraveStoneOrder) => order['dead-m'] = val)
-m.set('dead-y', (val:string, order:GraveStoneOrder) => order['dead-y'] = val)
-m.set('text-after', (val:string, order:GraveStoneOrder) => order['text-after'] = val)
-m.set('extra-line-name', (val:any, order:GraveStoneOrder) => order['extra-line-name'] = val)
+const inputField = new Map<string, Function>()
+inputField.set('ln1', (val:string, order:GraveStoneOrder) => order.customTextLines[0] = val)
+inputField.set('ln2', (val:string, order:GraveStoneOrder) => order.customTextLines[1] = val)
 
-function stuffchanged (evt: Event) {
+const textField = new Map<string, Function>()
+textField.set('born-d', (val:string, order:GraveStoneOrder) => order['born-d'] = val)
+textField.set('born-m', (val:string, order:GraveStoneOrder) => order['born-m'] = val)
+textField.set('born-y', (val:string, order:GraveStoneOrder) => order['born-y'] = val)
+textField.set('dead-d', (val:string, order:GraveStoneOrder) => order['dead-d'] = val)
+textField.set('dead-m', (val:string, order:GraveStoneOrder) => order['dead-m'] = val)
+textField.set('dead-y', (val:string, order:GraveStoneOrder) => order['dead-y'] = val)
+textField.set('extra-line-name', (val:any, order:GraveStoneOrder) => order['extra-line-name'] = val)
+textField.set('text-after', (val:string, order:GraveStoneOrder) => order.textAfterProduct = getState().efterskriftProducts.find(p => p.name === val))
+
+function changeHandler (evt: Event) {
   const el = evt.target as HTMLInputElement
-  console.debug(el)
   const value:string = el.value
-  const f = m.get(el.name)
-  if (f) {
+  const cb = textField.get(el.name)
+  if (cb) {
+    dispatch((currentState, updateState) => {
+      const order = currentState.order
+      cb(value, order)
+      updateState({order})
+    })
+  }
+}
+
+function inputHandler (evt: Event) {
+  const el = evt.target as HTMLInputElement
+  const value:string = el.value
+  const cb = inputField.get(el.name)
+  if (cb) {
     setTimeout(() =>
       dispatch((currentState, updateState) => {
         const order = currentState.order
-        f(value, order)
+        cb(value, order)
         updateState({order})
       })
     ,0)
@@ -34,7 +48,7 @@ function stuffchanged (evt: Event) {
 
 export function render (state: IState) {
   return html`
-<form class="grid-x grid-margin-x" @change=${stuffchanged} @input=${stuffchanged}>
+<form class="grid-x grid-margin-x" @change=${changeHandler} @input=${inputHandler}>
   <div class="medium-6 cell">
     <label>Navn linje 1 (max 20 tegn)
   <input type="text" name="ln1">
@@ -50,23 +64,24 @@ export function render (state: IState) {
     <div class="medium-3 cell auto">
   <label>
     <select name="born-d">
-    ${new Array(31).fill(1).map((v, idx) => html`<option>${v + idx}</option>`)}                             
-    </select>
+    <option selected></option>
+      ${new Array(31).fill(1).map((v, idx) => html`<option>${v + idx}</option>`)}                             
+      </select>
     </label>
     </div>
     <div class="medium-3 cell auto">
   <label>
     <select name="born-m">
-    ${new Array(12).fill(1).map((v, idx) => html`<option>${v + idx}</option>`)}
-
+      <option selected></option>
+      ${new Array(12).fill(1).map((v, idx) => html`<option>${v + idx}</option>`)}
     </select>
     </label>
     </div>
     <div class="medium-6 cell auto">
-  <label>
+    <label>
     <select name="born-y">
-    ${new Array(120).fill((new Date).getFullYear() - 120 + 1).map((v, idx) => html`<option>${v + idx}</option>`)}
-
+      <option selected></option>
+      ${new Array(120).fill((new Date).getFullYear() - 120 + 1).map((v, idx) => html`<option>${v + idx}</option>`)}
     </select>
     </label>
     </div>
@@ -75,7 +90,8 @@ export function render (state: IState) {
     <div class="medium-3 cell auto">
   <label>
     <select name="dead-d">
-    ${new Array(31).fill(1).map((v, idx) => html`<option>${v + idx}</option>`)}
+      <option selected></option>
+      ${new Array(31).fill(1).map((v, idx) => html`<option>${v + idx}</option>`)}
     </select>
   </label>
   </div>
@@ -83,7 +99,8 @@ export function render (state: IState) {
   <div class="medium-3 cell auto">
     <label>
     <select name="dead-m">
-        ${(new Array(31).fill(1).map((v, idx) => html`<option>${v + idx}</option>`))}                             
+      <option selected></option>
+      ${ unsafeHTML(new Array(31).fill(1).map((v, idx) => `<option>${v + idx}</option>`).join('')) }                             
     </select>
     </label>
   </div>
@@ -91,7 +108,8 @@ export function render (state: IState) {
     <div class="medium-6 cell auto">
     <label>
       <select name="dead-y">
-          ${unsafeHTML(`${(new Array(120)).fill((new Date).getFullYear() - 120 + 1).map((v, idx) => `<option>${v + idx}</option>`).reverse().join('')}`)}
+        <option selected></option>
+        ${ unsafeHTML(new Array(120).fill((new Date).getFullYear() - 120 + 1).map((v, idx) => `<option>${v + idx}</option>`).reverse().join('') ) }
       </select>
     </label>
     </div>
@@ -99,7 +117,8 @@ export function render (state: IState) {
     <div class="cell small-12">
     <label>Ønskes efterskrift
     <select name="text-after">
-      ${state.efterskrift.map(txt => html`<option>${txt}</option>`)}
+      <option selected value="">(ingen)</option>
+      ${state.efterskriftProducts.map(p => html`<option>${p.name}</option>`)}
     </select>
   </label>
   </div>
@@ -107,11 +126,11 @@ export function render (state: IState) {
   <fieldset class="cell small-12">
     <legend>Skal inskriptionen udføres så der senere er plads til et ekstra navn?</legend>
       <label>
-      <input type="radio" name="extra-line-name" value="yes">
+      <input ?checked=${state.order['extra-line-name'] === 'yes'} type="radio" name="extra-line-name" value="yes">
       Ja
       </label>
       <label>
-      <input type="radio" name="extra-line-name" value="no">
+      <input ?checked=${state.order['extra-line-name'] === 'no'} type="radio" name="extra-line-name" value="no">
       Nej
     </label>
   </fieldset>

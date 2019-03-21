@@ -56,7 +56,7 @@ module.exports = {
       new OptimizeCSSAssetsPlugin({})
     ]
   },
-
+  devtool: 'sourcemap',
   devServer: {
     publicPath: "/dist/", // renaming the server output
     hot: false,

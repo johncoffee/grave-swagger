@@ -76,6 +76,38 @@
 @import '../../node_modules/foundation-sites/scss/components/visibility';
 @import '../../node_modules/foundation-sites/scss/prototype/prototype';
 
+@font-face {
+  font-family: 'AntikvaCBRegular';
+  src: url('/fonts/antikva_type_13-webfont.eot');
+  src: url('/fonts/antikva_type_13-webfont.eot?#iefix') format('embedded-opentype'), url('/fonts/antikva_type_13-webfont.woff') format('woff'), url('/fonts/antikva_type_13-webfont.ttf') format('truetype'), url('/fonts/antikva_type_13-webfont.svg#AntikvaCBRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'HelveticaMediumStenRegular';
+  src: url('/fonts/helvetica_type_4_og_5-webfont.eot');
+  src: url('/fonts/helvetica_type_4_og_5-webfont.eot?#iefix') format('embedded-opentype'), url('/fonts/helvetica_type_4_og_5-webfont.woff') format('woff'), url('/fonts/helvetica_type_4_og_5-webfont.ttf') format('truetype'), url('/fonts/helvetica_type_4_og_5-webfont.svg#HelveticaMediumStenRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SkriveskriftStenRegular';
+  src: url('/fonts/skriveskrift_type_8-webfont.eot');
+  src: url('/fonts/skriveskrift_type_8-webfont.eot?#iefix') format('embedded-opentype'), url('/fonts/skriveskrift_type_8-webfont.woff') format('woff'), url('/fonts/skriveskrift_type_8-webfont.ttf') format('truetype'), url('/fonts/skriveskrift_type_8-webfont.svg#SkriveskriftStenRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SlotRegular';
+  src: url('/fonts/slot-webfont.eot');
+  src: url('/fonts/slot-webfont.eot?#iefix') format('embedded-opentype'), url('/fonts/slot-webfont.woff') format('woff'), url('/fonts/slot-webfont.ttf') format('truetype'), url('/fonts/slot-webfont.svg#SlotRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
 
 .zf-root {
   $flex: true;
@@ -151,39 +183,26 @@
 }
 
 
+//even more stuff
+.custom-text {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  font-size: 31px;
+
+}
+.custom-text--ln1 {top: 110px}
+.custom-text--ln2 {top: 130px}
+.custom-text--ln3 {top: 160px; font-size: 24px;}
+.custom-text--ln4 {top: 180px; font-size: 24px;}
+.custom-text--ln5 {top: 200px; font-size: 24px;}
+
+.bg {
+  background-size: contain;
+  background-position: center center;
+
+  width: 440px; height:  360px; position: relative;
+}
+
 //more stuff
-/**
--- Font
-@import url("font");
-**/
-@font-face {
-  font-family: 'AntikvaCBRegular';
-  src: url('/fonts/antikva_type_13-webfont.eot');
-  src: url('/fonts/antikva_type_13-webfont.eot?#iefix') format('embedded-opentype'), url('/fonts/antikva_type_13-webfont.woff') format('woff'), url('/fonts/antikva_type_13-webfont.ttf') format('truetype'), url('/fonts/antikva_type_13-webfont.svg#AntikvaCBRegular') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'HelveticaMediumStenRegular';
-  src: url('/fonts/helvetica_type_4_og_5-webfont.eot');
-  src: url('/fonts/helvetica_type_4_og_5-webfont.eot?#iefix') format('embedded-opentype'), url('/fonts/helvetica_type_4_og_5-webfont.woff') format('woff'), url('/fonts/helvetica_type_4_og_5-webfont.ttf') format('truetype'), url('/fonts/helvetica_type_4_og_5-webfont.svg#HelveticaMediumStenRegular') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'SkriveskriftStenRegular';
-  src: url('/fonts/skriveskrift_type_8-webfont.eot');
-  src: url('/fonts/skriveskrift_type_8-webfont.eot?#iefix') format('embedded-opentype'), url('/fonts/skriveskrift_type_8-webfont.woff') format('woff'), url('/fonts/skriveskrift_type_8-webfont.ttf') format('truetype'), url('/fonts/skriveskrift_type_8-webfont.svg#SkriveskriftStenRegular') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'SlotRegular';
-  src: url('/fonts/slot-webfont.eot');
-  src: url('/fonts/slot-webfont.eot?#iefix') format('embedded-opentype'), url('/fonts/slot-webfont.woff') format('woff'), url('/fonts/slot-webfont.ttf') format('truetype'), url('/fonts/slot-webfont.svg#SlotRegular') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}

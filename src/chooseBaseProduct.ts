@@ -1,11 +1,14 @@
-import { IState, updateOrder } from './store.js'
-import { html } from 'lit-html'
+import { IState, updateOrder } from './store'
+import {html} from '../node_modules/lit-html/lit-html.js'
 
 export function render (state:IState) {
   return html`
-<div>
-    Choose stone type (${state.order.graveCategory})    
-    <div @click=${() => updateOrder({graveCategory: 'urnesten'})}>urnesten</div>
-    <div @click=${() => updateOrder({graveCategory: 'plænesten'})}>plænesten</div>
+
+<div class="grid-x">    
+    ${state.stoneMaterialProducts.map(p => 
+    html`<div class="cell medium-12" @click=${() => updateOrder({stoneProduct: p})}>
+            <div><img src="${p.image}" width=100></div>
+            <div>${p.name}</div> 
+        </div>`)}    
 </div>`
 }

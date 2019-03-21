@@ -1,17 +1,18 @@
 export interface Product {
+  id: string
   name: string
-  price: number
-}
-
-export interface StoneBase extends Product {
-  graveCategory: 'urnesten' | 'plænesten'
+  image: string
+  price: string
+  category: string
 }
 
 export interface GraveStoneOrder {
   // properties
-  stoneBaseProduct: StoneBase
   graveCategory: 'urnesten' | 'plænesten'
-  stoneMaterial: 'granite-white' | 'granite-red'
+
+  stoneProduct: Product,
+  fontProduct: Product,
+  textAfterProduct?: Product,
 
   // swag
   customTextLines: string[]
@@ -22,18 +23,9 @@ export interface GraveStoneOrder {
   'born-m': string
   'born-y': string
   'extra-line-name': 'yes'|'no'
-  'text-after': string
 
   // product addons
   stoneStandSupport?: Product
   decorationIllustration?: 'birds' | 'tree'
   decorationFrame?: 'round-corners' | 'square'
-}
-
-export interface PlænestenOrder extends GraveStoneOrder {
-  graveCategory: 'plænesten'
-}
-
-export interface UrnestenOrder extends GraveStoneOrder {
-  graveCategory: 'urnesten'
 }
