@@ -1,15 +1,5 @@
-import { mountRoot } from './module1'
+import { decorateGlobal, dispatchLoaded } from './module1'
 
-// Side effects
-
-const evt:any = new Event('swaggerLoaded')
-evt.mountSwagger = function(sel:string = '.grave-swagger-con') {
-  mountRoot(sel)
-}
-document.dispatchEvent(evt)
-
-
-// fetch inputs:
-
-// products
-// - convert to font selection component
+// here we provide access to the swagger in two ways:
+decorateGlobal(window)
+dispatchLoaded()
