@@ -60,61 +60,59 @@ export function render (state: IState) {
     </label>
     </div>
 
-    <div class="medium-12 cell">Født</div>
-    <div class="medium-3 cell auto">
+  <div class="medium-12 cell">Født</div>
+  <div class="medium-4 cell auto">
   <label>
     <select name="born-d">
     <option selected></option>
       ${new Array(31).fill(1).map((v, idx) => html`<option>${v + idx}</option>`)}                             
       </select>
     </label>
-    </div>
-    <div class="medium-3 cell auto">
-  <label>
+  </div>
+  <div class="medium-4 cell auto">
+     <label>
     <select name="born-m">
       <option selected></option>
       ${new Array(12).fill(1).map((v, idx) => html`<option>${v + idx}</option>`)}
     </select>
     </label>
-    </div>
-    <div class="medium-6 cell auto">
+  </div>
+  <div class="medium-4 cell auto">
     <label>
     <select name="born-y">
       <option selected></option>
       ${new Array(120).fill((new Date).getFullYear() - 120 + 1).map((v, idx) => html`<option>${v + idx}</option>`)}
     </select>
     </label>
-    </div>
+  </div>
 
     <div class="medium-12 cell">Død</div>
-    <div class="medium-3 cell auto">
-  <label>
-    <select name="dead-d">
-      <option selected></option>
-      ${new Array(31).fill(1).map((v, idx) => html`<option>${v + idx}</option>`)}
-    </select>
-  </label>
+  <div class="medium-4 cell auto">
+    <label>
+      <select name="dead-d">
+        <option selected></option>
+        ${new Array(31).fill(1).map((v, idx) => html`<option>${v + idx}</option>`)}
+      </select>
+    </label>
   </div>
-    
-  <div class="medium-3 cell auto">
+  <div class="medium-4 cell auto">
     <label>
     <select name="dead-m">
       <option selected></option>
       ${ unsafeHTML(new Array(31).fill(1).map((v, idx) => `<option>${v + idx}</option>`).join('')) }                             
     </select>
     </label>
-  </div>
-    
-    <div class="medium-6 cell auto">
+  </div>  
+  <div class="medium-4 cell auto">
     <label>
       <select name="dead-y">
         <option selected></option>
         ${ unsafeHTML(new Array(120).fill((new Date).getFullYear() - 120 + 1).map((v, idx) => `<option>${v + idx}</option>`).reverse().join('') ) }
       </select>
     </label>
-    </div>
+  </div>
 
-    <div class="cell small-12">
+  <div class="cell small-12">
     <label>Ønskes efterskrift
     <select name="text-after">
       <option selected value="">(ingen)</option>
@@ -123,16 +121,20 @@ export function render (state: IState) {
   </label>
   </div>
 
-  <fieldset class="cell small-12">
-    <legend>Skal inskriptionen udføres så der senere er plads til et ekstra navn?</legend>
+  <div class="cell small-12">
+    Skal inskriptionen udføres så der senere er plads til et ekstra navn?
+  </div>
+  <div class="cell shrink">
       <label>
-      <input ?checked=${state.order['extra-line-name'] === 'yes'} type="radio" name="extra-line-name" value="yes">
-      Ja
+        <input ?checked=${state.order['extra-line-name'] === 'yes'} type="radio" name="extra-line-name" value="yes">
+        Ja
       </label>
+  </div>
+  <div class="cell auto">     
       <label>
-      <input ?checked=${state.order['extra-line-name'] === 'no'} type="radio" name="extra-line-name" value="no">
-      Nej
+        <input ?checked=${state.order['extra-line-name'] === 'no'} type="radio" name="extra-line-name" value="no">
+        Nej
     </label>
-  </fieldset>
+  </div>
 </form>
 `}
