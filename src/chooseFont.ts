@@ -1,7 +1,7 @@
 import { html } from '../node_modules/lit-html/lit-html'
 import { Font } from './store'
 import { dispatchUpdateShorthand as upd } from './module1'
-import { Product } from './types'
+import { Product } from './apiClient'
 
 export function render (fontProducts:Product[]) {
   console.assert(fontProducts.length > 0, "need fonts?")

@@ -1,5 +1,13 @@
-import { GraveStoneOrder, Product, } from './types'
+import { GraveStoneOrder, } from './types'
 import { Font } from './store'
+
+const base = 'https://behavior-dev-01.com'
+
+export interface Product {
+  id: number
+  name: string
+  image: string
+}
 
 export async function fetchProductsByCategory(category:number):Promise<Product[]> {
 
@@ -26,11 +34,9 @@ export async function fetchProductsByCategory(category:number):Promise<Product[]
         <Product>{
         name: 'Multicolor Poleret urnesten',
         image:'/images/Multicolor-Poleret-urnesten.jpg',
-        price: '319900',
       },<Product>{
         name: 'Multicolor 50x50',
         image:'/images/Multicolor-50.jpg',
-        price: '399500',
       }
     ]
   }
@@ -53,11 +59,11 @@ export async function fetchProductsByCategory(category:number):Promise<Product[]
   const json = await _fetchRemoteWc()
   const products:Product[] = json
     .filter(f => f.categories.find((cat:any) => cat.id === category))
-    .map (f => (<Product>{
-    price: f.price || -1,
-    name: f.name || `${f.id} missing name`,
-    category: 'plænesten',
-  }))
+    .map (f => Object.freeze({
+        ...f,
+        get image () {return f.images[0] ? f.images[0].src : 'http://0.0.0.0/missing-img'},
+      })
+    )
 
   return products
 }
@@ -84,34 +90,48 @@ export async function sendToBasket(order:GraveStoneOrder) {
 //   18: 'plænesten',
 //   19: 'urnesten',
 // }
-enum Category {
-  Uncategorised = 18,
-  Eftertekst = 32,
+export enum CategoryID {
+  Eftertekst = 46,
+  Plænesten = 19,
+  Urnesten = 47,
+  Skrifttype = 48,
 }
 
 export async function _fetchRemoteWc ():Promise<any[]> {
-  const _fixture = fix()
-  if (sessionStorage.dev)
-  return _fixture
+  const ck = 'ck_0b02b9744e2ae7d327bd28b50ad5d966ea97c7b8'
+  const cs = 'cs_9f5f34346fc2daf5b16bb96fc30870903c3b07c8'
+  const url = `${base}/wp-json/wc/v3/products?consumer_key=${ck}&consumer_secret=${cs}&per_page=100`
 
-  const ck = 'ck_9d6f535ef33c192c5edd83b0c6e6a6fc50528403'
-  const cs = 'cs_66e898c61264a6156bd6aebefd1fde4a9fbb1a50'
-  const url = `https://www.victorfenger.dk/wp-json/wc/v3/products?consumer_key=${ck}&consumer_secret=${cs}&per_page=100`
+  if (sessionStorage[url]) {
+    try {
+      const revived = JSON.parse(sessionStorage[url])
+      if (Array.isArray(revived) && revived.length > 0) {
+        console.debug(`Returning ${revived.length} items from cache`)
+        return revived
+      }
+    }
+    catch (e) {
+      console.log('cache was corrupt')
+      delete sessionStorage[url]
+    }
+  }
+
+  if (sessionStorage.dev) {
+    const _fixture = fix()
+    return _fixture
+  }
 
   const res = await fetch(url)
   const txt = await res.json()
+
+  if (!sessionStorage[url]) {
+    sessionStorage[url] = JSON.stringify(txt)
+  }
   return txt
 }
 
-var module:any
-if (module && !module.parent) {
-  _fetchRemoteWc()
-    .then(res =>   console.debug(res))
-}
-
-// getBasketProducts().then(console.log)
-async function getBasketProducts (url = 'https://www.victorfenger.dk/basket/') {
-  const res = await fetch(url)
+export async function fetchBasketProducts () {
+  const res = await fetch(`${base}/basket`)
   const html = await res.text()
 
   const fragment = document.createElement('div')

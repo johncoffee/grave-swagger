@@ -1,10 +1,4 @@
-export interface Product {
-  id: string
-  name: string
-  image: string
-  price: string
-  category: string
-}
+import { Product } from './apiClient.js'
 
 export interface GraveStoneOrder {
   // properties

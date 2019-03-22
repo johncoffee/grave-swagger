@@ -4,8 +4,8 @@ import * as progress from './progress'
 import * as chooseFont from './chooseFont'
 import * as chooseBase from './chooseBaseProduct'
 import * as formDetails from './form'
-import { getState, IState, IUpdateState, originalState, Route, addState, updateOrder } from './store'
-import { fetchProductsByCategory } from './apiClient'
+import { addState, getState, IState, IUpdateState, originalState, Route, updateOrder } from './store'
+import { CategoryID, fetchProductsByCategory } from './apiClient'
 
 let selector:string
 
@@ -46,6 +46,10 @@ export function dispatchUpdateShorthand (newState:Partial<IState>) {
   })
 }
 
+function updateBasket () {
+  // update basket
+}
+
 function render (state:IState) {
 
   if (state.showLoading) {
@@ -68,9 +72,12 @@ ${'' && chooseBase.render(state)}
       ${formDetails.render(state)}
   </div>
   <div class="cell medium-6">
-      <div class="stone-render-container">${stoneVisual.render(state)}</div>
-      <div class="margin-2 text-right">
-          <button @click=${() => dispatchUpdateShorthand({route: Route.OrderConfirmation})} type="button" class="button success next-button">Næste</button>
+      <div class="stone-render-container">${stoneVisual.render(state)}</div>     
+  </div>
+  <div class="cell small-12">
+      <div class="margin-2 text-center">
+          <button @click=${updateBasket} type="button" class="button success next-button">
+          Næste</button>
       </div>
   </div>
 </div>
@@ -80,24 +87,48 @@ ${'' && chooseBase.render(state)}
 `
 }
 
+type Options = {
+  stoneProductID: number
+  stoneCategory: CategoryID
+}
+
 function onMounted () {
 
   !async function () {
     // const products = await fetchProductsByCategory(18)
+    const opt = <Options>{
+      // stoneProductID: 118,
+      // stoneCategory: CategoryID.Plænesten
 
-    const fontProducts = await fetchProductsByCategory(-1)
-    addState({fontProducts})
+      stoneProductID: 259,
+      stoneCategory: CategoryID.Urnesten
+    }
 
-    const stoneMaterialProducts = await fetchProductsByCategory(-2)
+    // const basketItems = await fetchBasketProducts()
+    // console.debug("baskt",basketItems)
 
-    addState({stoneMaterialProducts})
-    console.assert(!!stoneMaterialProducts[0], 'missing a product')
+    const fontProducts = await fetchProductsByCategory(CategoryID.Skrifttype)
+    const efterskriftProducts = await fetchProductsByCategory(CategoryID.Eftertekst)
+    const stoneMaterialProducts = await fetchProductsByCategory(opt.stoneCategory)
 
-    const efterskriftProducts = await fetchProductsByCategory(-3)
-    addState({efterskriftProducts})
+    console.assert(stoneMaterialProducts.length > 0, 'missing products')
 
-    addState({showLoading: false})
-    updateOrder({stoneProduct: stoneMaterialProducts[0]})
+    addState({
+      efterskriftProducts,
+      fontProducts,
+      stoneMaterialProducts,
+      showLoading: false,
+    })
+
+    console.debug(stoneMaterialProducts[0])
+    stoneMaterialProducts.forEach(st => console.log(st.id === opt.stoneProductID))
+
+    const p = stoneMaterialProducts.find(st => st.id === opt.stoneProductID)
+    console.debug(opt.stoneProductID, p)
+    console.assert(!!p, "did not find stone "+opt.stoneProductID)
+    updateOrder({
+      stoneProduct: stoneMaterialProducts.find(st => st.id === opt.stoneProductID)
+    })
   }()
 }
 

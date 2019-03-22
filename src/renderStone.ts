@@ -1,6 +1,7 @@
 import { html, } from '../node_modules/lit-html/lit-html.js'
-import { GraveStoneOrder, Product } from './types'
+import { GraveStoneOrder} from './types'
 import { Font, IState } from './store'
+import { Product } from './apiClient.js'
 
 export function render (state:IState) {
   const order:GraveStoneOrder = state.order

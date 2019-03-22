@@ -1,5 +1,6 @@
-import { GraveStoneOrder, Product, } from './types'
+import { GraveStoneOrder, } from './types'
 import { dispatchUpdateShorthand as upd } from './module1'
+import { Product } from './apiClient.js'
 
 export enum Route {
   ChooseType,
@@ -11,12 +12,16 @@ export enum Route {
 
 export interface IState {
   showLoading: boolean
-  route: Route
   order: GraveStoneOrder
   fontProducts: Product[]
   stoneMaterialProducts: Product[]
   font: Font
   efterskriftProducts: Product[]
+
+  /**
+   * @deprecated
+   */
+  route: Route
 }
 
 
