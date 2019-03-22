@@ -19,7 +19,10 @@ export function render (state:IState) {
 
   return html`    
     <div
-    class="bg ${state.font === Font.Antikva ? 'custom-text--antikva' : ''}" 
+    class="bg
+        ${state.font === Font.Antikva ? 'custom-text--antikva' : ''}
+        ${state.font === Font.Bronze  ? 'custom-text--antikva custom-text--bonze' : ''}
+    " 
     style="background-image: url('${order.stoneProduct.image}');
            font-family: '${fonts.get(state.font)}'">
         <div class="custom-text text-center custom-text--ln1">${vm.ln1}</div>
