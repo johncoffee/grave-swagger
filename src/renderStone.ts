@@ -1,7 +1,11 @@
 import { html, } from '../node_modules/lit-html/lit-html.js'
-import { GraveStoneOrder} from './types'
+import { GraveStoneOrder } from './types'
 import { Font, IState } from './store'
-import { Product } from './apiClient.js'
+
+const fonts = new Map<Font, string>([
+  [Font.Helvetica, 'HelveticaMediumStenRegular'],
+  [Font.Antikva, 'AntikvaCBRegular'],
+])
 
 export function render (state:IState) {
   const order:GraveStoneOrder = state.order
@@ -12,16 +16,12 @@ export function render (state:IState) {
     ln3: `★ ${order['dead-d']}. ${order['dead-m']}. ${order['dead-y']} ✝ ${order['born-d']}. ${order['born-m']}. ${order['born-y']}`,
     ln4: (order.textAfterProduct) ? order.textAfterProduct.name : "",
   }
-  const fonts = new Map<Font, string>([
-    [Font.Helvetica, 'HelveticaMediumStenRegular'],
-    [Font.Antikva, 'AntikvaCBRegular'],
-  ])
 
   return html`    
     <div
-    class='bg' 
+    class="bg ${state.font === Font.Antikva ? 'custom-text--antikva' : ''}" 
     style="background-image: url('${order.stoneProduct.image}');
-           font-family: '${fonts.get(state.font) || "comic sans ms"}'">
+           font-family: '${fonts.get(state.font)}'">
         <div class="custom-text text-center custom-text--ln1">${vm.ln1}</div>
         <div class="custom-text text-center custom-text--ln2">${vm.ln2}</div>
         <div class="custom-text text-center custom-text--ln3">${vm.ln3}</div>
