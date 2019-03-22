@@ -3,3 +3,4 @@ dist/
 tmp/
 build/
 /src/**/*.js
+*.tgz

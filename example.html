@@ -9,15 +9,13 @@
             background-color: #eee;
         }
     </style>
-
-    <script>document.addEventListener('swaggerLoaded', evt => evt.mountSwagger('.grave-swagger-con'))</script>
-    <script src="dist/main.js" defer></script>
-
 </head>
 <body>
 
 <div class="zf-root">
-    <div class="grid-container grave-swagger-con" style="background: #fff"></div>
+    <div class="grid-container grave-swagger-con" style="background: #fff; min-height: 350px;"></div>
+    <script>document.addEventListener('swaggerLoaded', evt => evt.mountSwagger('.grave-swagger-con'))</script>
+    <script src="dist/main.js" defer></script>
 </div>
 
 </body>
