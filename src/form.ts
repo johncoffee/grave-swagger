@@ -113,10 +113,10 @@ export function render (state: IState) {
   </div>
 
   <div class="cell small-12">
-    <label>Ønskes efterskrift
+    <label>Ønskes efterskrift <strong>kr. ${state.efterskriftProducts.filter((v,idx)=>idx===0).map(p => p.price).find(p => !!p)}</strong>
     <select name="text-after">
       <option selected value="">(ingen)</option>
-      ${state.efterskriftProducts.map(p => html`<option>${p.name}</option>`)}
+      ${state.efterskriftProducts.map(p => html`<option value="${p.name}">${p.name}</option>`)}
     </select>
   </label>
   </div>

@@ -68,6 +68,11 @@ ${'' && chooseBase.render(state)}
 <div class="grid-x grid-margin-x">
   <div class="cell small-12">
     ${chooseFont.render(state.fontProducts)}</div>
+    
+    <div class="cell small-12" style="height: 20px;"></div>
+   
+    <div class="cell small-12">Oplysninger om den afdøde</div>
+    
   <div class="cell medium-6">
       ${formDetails.render(state)}
   </div>
