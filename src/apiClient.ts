@@ -4,6 +4,7 @@ import { Font } from './store'
 const base = 'https://behavior-dev-01.com'
 
 export interface Product {
+  [k: string]: any
   id: number
   name: string
   image: string
