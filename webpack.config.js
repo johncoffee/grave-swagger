@@ -34,7 +34,7 @@ module.exports = {
   module: {
     rules: [
       {
-      test: /\.(sa|sc|c)ss$/,
+        test: /\.(sa|sc|c)ss$/,
         use: [
           // fallback to style-loader in development
           MiniCssExtractPlugin.loader,
@@ -42,21 +42,17 @@ module.exports = {
           "sass-loader",
         ]
       },
-      {
-        test: /\.ts$/,
-        use: 'ts-loader',
-        exclude: /node_modules/
-      }
+      // {
+      //   test: /\.ts$/,
+      //   use: 'ts-loader',
+      //   exclude: /node_modules/
+      // }
     ]
   },
   resolve: {
-    extensions: [ '.ts', '.js' ]
+    // extensions: [ '.ts', '.js' ]
   },
   plugins: [
-    // new MiniCssExtractPlugin({
-    //   // Options similar to the same options in webpackOptions.output
-    //   // both options are optional
-    // })
     new MiniCssExtractPlugin({
       // filename: "[name].css",
       // chunkFilename: "[id].css"
