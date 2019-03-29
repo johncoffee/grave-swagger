@@ -20,7 +20,7 @@
     "webpack-dev-server": "^3.2.1"
   },
   "scripts": {
-    "devserver": "webpack-dev-server --watch-aggregate-timeout 1000",
+    "devserver": "webpack-dev-server --open --watch-aggregate-timeout 1500",
     "develop": "webpack --watch",
     "build": "webpack --mode production"
   },
