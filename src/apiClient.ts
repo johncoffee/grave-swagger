@@ -131,7 +131,7 @@ export async function _fetchRemoteWc ():Promise<any[]> {
   return txt
 }
 
-export async function fetchBasketProducts () {
+export async function fetchBasketProductsHack () {
   const res = await fetch(`${base}/basket`)
   const html = await res.text()
 
