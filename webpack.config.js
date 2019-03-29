@@ -1,7 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-
+const {execSync} = require('child_process')
 const dev = !process.argv.some(val => val.includes('production'))
 console.log("Webpack mode "+ (dev ? 'development' : 'production'))
 
@@ -14,7 +14,22 @@ module.exports = {
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: dev ? '[name].js' : '[name][hash].min.js'
+    get filename() {
+      let name = `[name].js`;
+      if (!dev) {
+        let suffix
+        try {
+          const resultBuffer = execSync('git rev-parse --short --verity HEAD')
+          suffix = resultBuffer.toString().trim()
+        }
+        catch (e) {
+          suffix = 'unknown-commit'
+          console.error("Failed finding git commit hash")
+        }
+        name = name.replace('[name]', `[name]-${suffix}`)
+      }
+      return name
+    },
   },
   module: {
     rules: [
