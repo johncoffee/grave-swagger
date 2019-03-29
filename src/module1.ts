@@ -97,9 +97,8 @@ type Options = {
   stoneCategory: CategoryID
 }
 
-function onMounted () {
+async function onMounted () {
 
-  !async function () {
     // const products = await fetchProductsByCategory(18)
     const opt = <Options>{
       // stoneProductID: 118,
@@ -134,7 +133,6 @@ function onMounted () {
     updateOrder({
       stoneProduct: stoneMaterialProducts.find(st => st.id === opt.stoneProductID)
     })
-  }()
 }
 
 export function mountRoot (_selector:string) {
