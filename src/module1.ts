@@ -149,7 +149,7 @@ export function decorateGlobal(window:any) {
   }
 }
 
-export function dispatchLoaded () {
+export function dispatchLoaded (document:EventTarget) {
   const evt:any = new Event('swaggerLoaded')
   evt.mountSwagger = function(sel:string = '.grave-swagger-con') {
     mountRoot(sel)
