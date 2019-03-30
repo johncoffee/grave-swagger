@@ -5,7 +5,8 @@ import * as chooseFont from './chooseFont'
 import * as chooseBase from './chooseBaseProduct'
 import * as formDetails from './form'
 import { addState, getState, IState, IUpdateState, originalState, Route, updateOrder } from './store'
-import { CategoryID, fetchProductsByCategory } from './apiClient'
+import { addToBasket, CategoryID, fetchProductsByCategory } from './apiClient'
+import { GraveStoneOrder } from './types.js'
 
 let selector:string
 
@@ -46,8 +47,16 @@ export function dispatchUpdateShorthand (newState:Partial<IState>) {
   })
 }
 
-function updateBasket () {
+async function updateBasket (order:GraveStoneOrder) {
   // update basket
+
+  console.log("putting font in basket....")
+  await addToBasket(order.fontProduct.id)
+
+  if (order.textAfterProduct) {
+    console.log("extra-text in basket...")
+    await addToBasket(order.textAfterProduct.id)
+  }
 }
 
 function render (state:IState) {
@@ -81,7 +90,7 @@ ${'' && chooseBase.render(state)}
   </div>
   <div class="cell small-12">
       <div class="margin-2 text-center">
-          <button @click=${updateBasket} type="button" class="button success next-button">
+          <button @click=${() => updateBasket(state.order)} type="button" class="button success next-button">
           Næste</button>
       </div>
   </div>
@@ -98,24 +107,29 @@ type Options = {
 }
 
 async function onMounted () {
-
+    const searchParams = new Map<string,string>(
+      location.search.replace(/^\?/,'')
+        .split('&')
+        .map(v => v.split('=') as [string, string])
+        .filter(([k]) => k)
+    )
     // const products = await fetchProductsByCategory(18)
     const opt = <Options>{
       // stoneProductID: 118,
-      // stoneCategory: CategoryID.Plænesten
-
-      stoneProductID: 259,
+      // stoneCategory: CategoryID.Plaenesten
+      stoneProductID: parseInt(searchParams.get('stone_product_id') || sessionStorage.stone_product_id),
       stoneCategory: CategoryID.Urnesten
     }
 
     // const basketItems = await fetchBasketProducts()
     // console.debug("baskt",basketItems)
-
     const fontProducts = await fetchProductsByCategory(CategoryID.Skrifttype)
     const efterskriftProducts = await fetchProductsByCategory(CategoryID.Eftertekst)
     const stoneMaterialProducts = await fetchProductsByCategory(opt.stoneCategory)
 
-    console.assert(stoneMaterialProducts.length > 0, 'missing products')
+    if (fontProducts.length === 0) console.warn('missing font products on initialization')
+    if (efterskriftProducts.length === 0) console.warn('missing efterskrift products on initialization')
+    if (stoneMaterialProducts.length === 0) console.warn('missing stone products on initialization')
 
     addState({
       efterskriftProducts,
@@ -124,12 +138,8 @@ async function onMounted () {
       showLoading: false,
     })
 
-    console.debug(stoneMaterialProducts[0])
-    stoneMaterialProducts.forEach(st => console.log(st.id === opt.stoneProductID))
-
     const p = stoneMaterialProducts.find(st => st.id === opt.stoneProductID)
-    console.debug(opt.stoneProductID, p)
-    console.assert(!!p, "did not find stone "+opt.stoneProductID)
+    console.assert(!!p, "did not find product by id "+opt.stoneProductID + ' in list of' + stoneMaterialProducts.length)
     updateOrder({
       stoneProduct: stoneMaterialProducts.find(st => st.id === opt.stoneProductID)
     })
