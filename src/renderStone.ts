@@ -1,10 +1,11 @@
 import { html, } from '../node_modules/lit-html/lit-html.js'
 import { GraveStoneOrder } from './types'
-import { Font, IState } from './store'
+import { IState } from './store'
+import { FontProductID } from './apiClient.js'
 
-const fonts = new Map<Font, string>([
-  [Font.Helvetica, 'HelveticaMediumStenRegular'],
-  [Font.Antikva, 'AntikvaCBRegular'],
+const fonts = new Map<FontProductID, string>([
+  [FontProductID.Helvetica, 'HelveticaMediumStenRegular'],
+  [FontProductID.Antikva, 'AntikvaCBRegular'],
 ])
 
 export function render (state:IState) {
@@ -20,8 +21,8 @@ export function render (state:IState) {
   return html`    
     <div
     class="bg
-        ${state.font === Font.Antikva ? 'custom-text--antikva' : ''}
-        ${state.font === Font.Bronze  ? 'custom-text--antikva custom-text--bonze' : ''}
+        ${state.font === FontProductID.Antikva ? 'custom-text--antikva' : ''}
+        ${state.font === FontProductID.Bronze  ? 'custom-text--antikva custom-text--bonze' : ''}
     " 
     style="background-image: url('${order.stoneProduct.image}');
            font-family: '${fonts.get(state.font)}'">

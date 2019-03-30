@@ -121,8 +121,6 @@ async function onMounted () {
       stoneCategory: CategoryID.Urnesten
     }
 
-    // const basketItems = await fetchBasketProducts()
-    // console.debug("baskt",basketItems)
     const fontProducts = await fetchProductsByCategory(CategoryID.Skrifttype)
     const efterskriftProducts = await fetchProductsByCategory(CategoryID.Eftertekst)
     const stoneMaterialProducts = await fetchProductsByCategory(opt.stoneCategory)
@@ -130,6 +128,8 @@ async function onMounted () {
     if (fontProducts.length === 0) console.warn('missing font products on initialization')
     if (efterskriftProducts.length === 0) console.warn('missing efterskrift products on initialization')
     if (stoneMaterialProducts.length === 0) console.warn('missing stone products on initialization')
+
+    const fontProduct = fontProducts.find(f => f.id === getState().defaultFont)
 
     addState({
       efterskriftProducts,
@@ -141,8 +141,11 @@ async function onMounted () {
     const p = stoneMaterialProducts.find(st => st.id === opt.stoneProductID)
     console.assert(!!p, "did not find product by id "+opt.stoneProductID + ' in list of' + stoneMaterialProducts.length)
     updateOrder({
+      fontProduct,
       stoneProduct: stoneMaterialProducts.find(st => st.id === opt.stoneProductID)
     })
+
+
 }
 
 export function mountRoot (_selector:string) {

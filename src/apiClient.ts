@@ -1,5 +1,4 @@
 import { GraveStoneOrder, } from './types'
-import { Font } from './store'
 
 const base = 'https://behavior-dev-01.com'
 const ck = 'ck_0b02b9744e2ae7d327bd28b50ad5d966ea97c7b8'
@@ -14,22 +13,30 @@ export interface Product {
 type StringDict = {
   [k:string]: string
 }
+
+export enum FontProductID {
+  Helvetica = 255,
+  Antikva = 257,
+  Skriveskrift = 267,
+  Bronze = 268,
+}
+
 export async function fetchProductsByCategory(category:number):Promise<Product[]> {
 
   // fixtures
   if (category === -1) {
     return [
       <Product>{
-        name: Font[Font.Helvetica],
+        name: FontProductID[FontProductID.Helvetica],
         image: '/images/font-helvetica.jpg',
       },<Product>{
-        name: Font[Font.Antikva],
+        name: FontProductID[FontProductID.Antikva],
         image: '/images/font-antikva.jpg',
       }, <Product>{
-        name: Font[Font.Skriveskrift],
+        name: FontProductID[FontProductID.Skriveskrift],
         image: '/images/font-antikva.jpg',
       },<Product>{
-        name: Font[Font.Bronze],
+        name: FontProductID[FontProductID.Bronze],
         image: '/images/font-antikva.jpg',
       },
     ]
