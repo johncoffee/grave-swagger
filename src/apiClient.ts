@@ -109,9 +109,6 @@ export enum CategoryID {
   Skrifttype = 48,
 }
 
-export enum ProductIdFixture {
-  Antikva = 257,
-}
 
 export async function _fetchRemoteWc ():Promise<any[]> {
   const url = `${base}/wp-json/wc/v3/products?consumer_key=${ck}&consumer_secret=${cs}&per_page=100`
