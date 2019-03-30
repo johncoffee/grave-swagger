@@ -148,7 +148,6 @@ export async function fetchBasket () {
     mode: 'cors',
   })
   const basketContents:any[] = await res.json()
-  console.log(basketContents)
   return basketContents
 }
 
@@ -159,7 +158,9 @@ export async function addToBasket (product_id:number, quantity:number = 1) {
 //   "product_id": 1722,
 //     "quantity": 1
 // }'
-  const url = base + `/wp-json/wc/v2/cart/add?consumer_key=${ck}&consumer_secret=${cs}`
+  const _ck = 'ck_fa1e7066bd38262cd8f8695552f006be81461c58'
+  const _cs = 'cs_40660e69ca7eb38070d73e462d9a1c6fb2f1e50d'
+  const url = base + `/wp-json/wc/v2/cart/add?consumer_key=${_ck}&consumer_secret=${_cs}`
   const res = await fetch(url, {
     method: "post",
     credentials: 'include',
@@ -169,6 +170,10 @@ export async function addToBasket (product_id:number, quantity:number = 1) {
     ]),
     body: JSON.stringify({product_id, quantity})
   })
+
+  if (!res.ok) {
+    throw new Error(`${res.status} ${res.statusText}`)
+  }
 
   return res.json()
 }

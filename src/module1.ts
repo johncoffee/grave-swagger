@@ -1,12 +1,12 @@
-import * as stoneVisual from './renderStone'
 import * as lit from '../node_modules/lit-html/lit-html.js'
+import * as stoneVisual from './renderStone'
 import * as progress from './progress'
 import * as chooseFont from './chooseFont'
 import * as chooseBase from './chooseBaseProduct'
 import * as formDetails from './form'
 import { addState, getState, IState, IUpdateState, originalState, Route, updateOrder } from './store'
-import { addToBasket, CategoryID, fetchProductsByCategory } from './apiClient'
-import { GraveStoneOrder } from './types.js'
+import { addToBasket, CategoryID, fetchBasket, fetchProductsByCategory } from './apiClient'
+import { GraveStoneOrder } from './types'
 
 let selector:string
 
@@ -47,16 +47,25 @@ export function dispatchUpdateShorthand (newState:Partial<IState>) {
   })
 }
 
-async function updateBasket (order:GraveStoneOrder) {
+async function updateBasket (evt:Event, order:GraveStoneOrder) {
+  (evt.target as HTMLButtonElement).disabled = true
   // update basket
+  console.log("basket",await fetchBasket())
 
   console.log("putting font in basket....")
-  await addToBasket(order.fontProduct.id)
+  try {
+    await addToBasket(order.fontProduct.id)
 
-  if (order.textAfterProduct) {
-    console.log("extra-text in basket...")
-    await addToBasket(order.textAfterProduct.id)
+    if (order.textAfterProduct) {
+      console.log("extra-text in basket...")
+      await addToBasket(order.textAfterProduct.id)
+    }
   }
+  catch (e) {
+    console.error(e)
+  }
+
+  (evt.target as HTMLButtonElement).disabled = false
 }
 
 function render (state:IState) {
@@ -65,7 +74,7 @@ function render (state:IState) {
     return lit.html`Loading....`
   }
 
-  console.assert(!!state.order.stoneProduct, "Render needs a stone product to be set")
+  console.assert(!!state.order.stoneProduct, "module1 needs a stone product to be set")
   return lit.html`
 
 <!--progress-->
@@ -90,7 +99,7 @@ ${'' && chooseBase.render(state)}
   </div>
   <div class="cell small-12">
       <div class="margin-2 text-center">
-          <button @click=${() => updateBasket(state.order)} type="button" class="button success next-button">
+          <button @click=${(evt:Event) => updateBasket(evt, state.order)} type="button" class="button success">
           Næste</button>
       </div>
   </div>
@@ -125,11 +134,9 @@ async function onMounted () {
     const efterskriftProducts = await fetchProductsByCategory(CategoryID.Eftertekst)
     const stoneMaterialProducts = await fetchProductsByCategory(opt.stoneCategory)
 
-    if (fontProducts.length === 0) console.warn('missing font products on initialization')
-    if (efterskriftProducts.length === 0) console.warn('missing efterskrift products on initialization')
-    if (stoneMaterialProducts.length === 0) console.warn('missing stone products on initialization')
-
-    const fontProduct = fontProducts.find(f => f.id === getState().defaultFont)
+    if (fontProducts.length === 0) console.warn('no font products on initialization')
+    if (efterskriftProducts.length === 0) console.warn('no efterskrift products on initialization')
+    if (stoneMaterialProducts.length === 0) console.warn('no stone products on initialization')
 
     addState({
       efterskriftProducts,
@@ -138,14 +145,16 @@ async function onMounted () {
       showLoading: false,
     })
 
-    const p = stoneMaterialProducts.find(st => st.id === opt.stoneProductID)
-    console.assert(!!p, "did not find product by id "+opt.stoneProductID + ' in list of' + stoneMaterialProducts.length)
+    // defaults in the order:
+    const hardcodedFont = getState().defaultFont
+    const fontProduct = (hardcodedFont) ? fontProducts.find(f => f.id === hardcodedFont) : fontProducts[0]
+    console.assert(!!fontProduct, "Didn't find default font by " + hardcodedFont)
+    const stoneProduct = stoneMaterialProducts.find(st => st.id === opt.stoneProductID)
+    console.assert(!!stoneProduct, "did not find product by id "+opt.stoneProductID)
     updateOrder({
       fontProduct,
-      stoneProduct: stoneMaterialProducts.find(st => st.id === opt.stoneProductID)
+      stoneProduct,
     })
-
-
 }
 
 export function mountRoot (_selector:string) {
