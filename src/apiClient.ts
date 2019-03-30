@@ -2,6 +2,8 @@ import { GraveStoneOrder, } from './types'
 import { Font } from './store'
 
 const base = 'https://behavior-dev-01.com'
+const ck = 'ck_0b02b9744e2ae7d327bd28b50ad5d966ea97c7b8'
+const cs = 'cs_9f5f34346fc2daf5b16bb96fc30870903c3b07c8'
 
 export interface Product {
   [k: string]: any
@@ -9,7 +11,9 @@ export interface Product {
   name: string
   image: string
 }
-
+type StringDict = {
+  [k:string]: string
+}
 export async function fetchProductsByCategory(category:number):Promise<Product[]> {
 
   // fixtures
@@ -93,14 +97,16 @@ export async function sendToBasket(order:GraveStoneOrder) {
 // }
 export enum CategoryID {
   Eftertekst = 46,
-  Plænesten = 19,
+  Plaenesten = 19,
   Urnesten = 47,
   Skrifttype = 48,
 }
 
+export enum ProductIdFixture {
+  Antikva = 257,
+}
+
 export async function _fetchRemoteWc ():Promise<any[]> {
-  const ck = 'ck_0b02b9744e2ae7d327bd28b50ad5d966ea97c7b8'
-  const cs = 'cs_9f5f34346fc2daf5b16bb96fc30870903c3b07c8'
   const url = `${base}/wp-json/wc/v3/products?consumer_key=${ck}&consumer_secret=${cs}&per_page=100`
 
   if (sessionStorage[url]) {
@@ -129,6 +135,58 @@ export async function _fetchRemoteWc ():Promise<any[]> {
     sessionStorage[url] = JSON.stringify(txt)
   }
   return txt
+}
+
+export async function fetchBasket () {
+  const url = base + `/wp-json/wc/v2/cart?consumer_key=${ck}&consumer_secret=${cs}`
+  const res = await fetch(url,{
+    credentials: 'include',
+    mode: 'cors',
+  })
+  const basketContents:any[] = await res.json()
+  console.log(basketContents)
+  return basketContents
+}
+
+export async function addToBasket (product_id:number, quantity:number = 1) {
+//   curl -X POST https://example.com/wp-json/wc/v2/cart/add \
+//     -H "Content-Type: application/json" \
+//   -d '{
+//   "product_id": 1722,
+//     "quantity": 1
+// }'
+  const url = base + `/wp-json/wc/v2/cart/add?consumer_key=${ck}&consumer_secret=${cs}`
+  const res = await fetch(url, {
+    method: "post",
+    credentials: 'include',
+    mode: 'cors',
+    headers: new Headers([
+      ['Content-Type','application/json'],
+    ]),
+    body: JSON.stringify({product_id, quantity})
+  })
+
+  return res.json()
+}
+
+(window as any).addToBasket = addToBasket;
+(window as any).fetchBasket = fetchBasket;
+
+async function updateOrderMeta(order_id:number, meta_data:StringDict[]) {
+  const url = base + `/wp-json/wc/v2/cart/add?consumer_key=${ck}&consumer_secret=${cs}`
+  const res = await fetch(url, {
+    method: "post",
+    credentials: 'include',
+    mode: 'cors',
+    headers: new Headers([
+      ['Content-Type','application/json'],
+    ]),
+    body: JSON.stringify({
+      order_id,
+      meta_data,
+    })
+  })
+
 }
 
 export async function fetchBasketProductsHack () {
