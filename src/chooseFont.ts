@@ -1,6 +1,6 @@
 import { html } from '../node_modules/lit-html/lit-html'
 import { Product } from './apiClient'
-import { updateOrder } from './store.js'
+import { updateOrder } from './store'
 
 export function render (fontProducts:Product[]) {
   return html`

@@ -1,4 +1,4 @@
-import { Product } from './apiClient.js'
+import { Product } from './apiClient'
 
 export interface GraveStoneOrder {
   // properties

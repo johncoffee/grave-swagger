@@ -1,7 +1,7 @@
 import { html, } from '../node_modules/lit-html/lit-html.js'
 import { GraveStoneOrder } from './types'
 import { IState } from './store'
-import { FontProductID } from './apiClient.js'
+import { FontProductID } from './apiClient'
 
 const fonts = new Map<FontProductID, string>([
   [FontProductID.Helvetica, 'HelveticaMediumStenRegular'],
@@ -18,14 +18,16 @@ export function render (state:IState) {
     ln4: (order.textAfterProduct) ? order.textAfterProduct.name : "",
   }
 
+  console.assert(!!order.stoneProduct, "missing stone product (renderStone)")
+
   return html`    
     <div
     class="bg
-        ${state.font === FontProductID.Antikva ? 'custom-text--antikva' : ''}
-        ${state.font === FontProductID.Bronze  ? 'custom-text--antikva custom-text--bonze' : ''}
+        ${state.order.fontProduct.id === FontProductID.Antikva ? 'custom-text--antikva' : ''}
+        ${state.order.fontProduct.id === FontProductID.Bronze  ? 'custom-text--antikva custom-text--bonze' : ''}
     " 
     style="background-image: url('${order.stoneProduct.image}');
-           font-family: '${fonts.get(state.font)}'">
+           font-family: '${fonts.get(state.order.fontProduct.id)}'">
         <div class="custom-text text-center custom-text--ln1">${vm.ln1}</div>
         <div class="custom-text text-center custom-text--ln2">${vm.ln2}</div>
         <div class="custom-text text-center custom-text--ln3">${vm.ln3}</div>

@@ -1,6 +1,6 @@
 import { GraveStoneOrder, } from './types'
 import { dispatchUpdateShorthand as upd } from './module1'
-import { FontProductID, Product } from './apiClient.js'
+import { FontProductID, Product } from './apiClient'
 
 export enum Route {
   ChooseType,
@@ -15,7 +15,7 @@ export interface IState {
   order: GraveStoneOrder
   fontProducts: Product[]
   stoneMaterialProducts: Product[]
-  defaultFont: FontProductID
+  defaultFont?: FontProductID
   efterskriftProducts: Product[]
 
   /**
@@ -30,7 +30,7 @@ export interface IState {
 export const originalState:Readonly<IState> = <IState>{
   showLoading: true,
   route: Route.ChooseType,
-  defaultFont: FontProductID.Helvetica,
+  defaultFont: FontProductID.Helvetica, // Optional.
 
   stoneMaterialProducts: [],
   fontProducts: [],
