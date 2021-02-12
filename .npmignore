@@ -1,0 +1,10 @@
+# We use white listing instead of black listing because there's
+# so much junk in the repo that should not go on NPM
+
+# See https://docs.npmjs.com/misc/developers#keeping-files-out-of-your-package
+
+# Ignore everything:
+*
+
+# But re-include the final builds:
+!dist/*

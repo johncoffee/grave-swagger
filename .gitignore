@@ -2,3 +2,5 @@ node_modules/
 dist/
 tmp/
 build/
+/src/**/*.js
+*.tgz

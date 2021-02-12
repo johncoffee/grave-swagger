@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="dist/main.css">
+    <style>
+        html, body {
+            background-color: #eee;
+        }
+    </style>
+</head>
+<body>
+
+<div style="width: 1120px; margin: 0 auto;">
+    <div style="height: 200px; background: #aaa; margin-bottom: 20px"></div>
+
+    <div class="zf-root">
+        <div class="grid-container grave-swagger-con" style="background: #fff; min-height: 350px;"></div>
+        <script>document.addEventListener('swaggerLoaded', evt => evt.mountSwagger('.grave-swagger-con'))</script>
+        <script src="dist/main.js" defer></script>
+    </div>
+
+</div>
+
+
+</body>
+</html>
